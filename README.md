@@ -6,7 +6,7 @@ A pipeline for automated OCR on UPI transaction screenshots. It classifies scree
 
 ### ⚙️ Workflow
 
-1.  **Upload Images**: Place your screenshots into the `input_images/` directory.
+1.  **Upload Images**: Place your screenshots into the `input_images/` directory, create it within the root directory.
 2.  **Add Model Weights**: Download the weights and place them in the `upi_classifier_weights/` directory.
 3.  **Run Preprocessing**: Prepare the images for classification.
     ```bash
@@ -58,4 +58,4 @@ The final extracted data is saved in `upi_predictions.csv` with the following co
 ### 📝 Note
 
   * Model files are intentionally excluded from this Git repository to keep it lightweight.
-  * Please message the user to recieve model weights. Upload them in a folder called upi_classifier_weights.
+  * Please contact the owner to recieve model weights/run the code in the training notebook. 
