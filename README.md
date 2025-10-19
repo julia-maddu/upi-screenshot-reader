@@ -51,7 +51,7 @@ A pipeline for automated OCR on UPI transaction screenshots. It classifies scree
 
 ### 📊 Output
 
-The final extracted data is saved in `upi_predictions.csv` with the following columns: `app_type`, `transaction_id`, `amount`, and `status`.
+The final extracted data is saved in `upi_predictions.csv` with the following columns: `filename`, `apptype`, `transaction_id`
 
 -----
 
