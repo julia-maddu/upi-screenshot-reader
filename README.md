@@ -1,12 +1,12 @@
 # UPI Screenshot Reader
 
-A lightweight pipeline for automated OCR on UPI transaction screenshots. It classifies screenshots by app (GPay, PhonePe, etc.), applies targeted OCR, and outputs structured results.
+A pipeline for automated OCR on UPI transaction screenshots. It classifies screenshots by app (GPay, PhonePe, etc.), applies targeted OCR to extract UTR numbers, and outputs structured results.
 
 -----
 
 ### ⚙️ Workflow
 
-1.  **Upload Images**: Place your screenshots into the `test_images/` directory.
+1.  **Upload Images**: Place your screenshots into the `input_images/` directory.
 2.  **Add Model Weights**: Download the weights and place them in the `upi_classifier_weights/` directory.
 3.  **Run Preprocessing**: Prepare the images for classification.
     ```bash
@@ -58,4 +58,4 @@ The final extracted data is saved in `upi_predictions.csv` with the following co
 ### 📝 Note
 
   * Model files are intentionally excluded from this Git repository to keep it lightweight.
-  * Please refer to the full documentation for detailed setup and weight download instructions.
+  * Please message the user to recieve model weights. Upload them in a folder called upi_classifier_weights.
