@@ -2,7 +2,6 @@ __pycache__/
 venv/
 .env/
 .venv/
-classification model/
 upi_classifier_weights/
 *.h5
 *.pkl
