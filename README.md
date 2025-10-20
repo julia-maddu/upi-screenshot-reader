@@ -58,4 +58,4 @@ The final extracted data is saved in `upi_predictions.csv` with the following co
 ### 📝 Note
 
   * Model files are intentionally excluded from this Git repository to keep it lightweight.
-  * Please contact the owner to recieve model weights/run the code in the training notebook. 
+  * Please contact the owner to recieve model weights/dataset to run the code in the training notebook. 
