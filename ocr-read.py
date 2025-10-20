@@ -5,19 +5,9 @@ import re
 import os
 from tqdm import tqdm
 
-# If tesseract is not in PATH, uncomment and specify the path (Windows)
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 def extract_text_from_image(image_path):
-    """
-    Extract text from image using Tesseract OCR.
-    
-    Args:
-        image_path: Path to the image file
-        
-    Returns:
-        Extracted text as string, or None if extraction fails
-    """
+
     try:
         img = Image.open(image_path)
         # Use custom config for better accuracy
@@ -29,16 +19,7 @@ def extract_text_from_image(image_path):
         return None
 
 def extract_utr_from_text(text):
-    """
-    Extract UTR number from text using multiple regex patterns.
-    Removes all whitespace and newlines before pattern matching.
-    
-    Args:
-        text: Extracted text from OCR
-        
-    Returns:
-        UTR number as string, or 0 if not found
-    """
+
     if not text:
         return 0
     
@@ -67,18 +48,7 @@ def extract_utr_from_text(text):
     return 0
 
 def update_csv_with_utr(csv_path, image_folder, output_csv=None, verbose=False):
-    """
-    Read existing predictions CSV, extract UTR numbers, and update the DataFrame.
-    
-    Args:
-        csv_path: Path to the predictions CSV file
-        image_folder: Path to folder containing the original images
-        output_csv: Path to save updated CSV (if None, overwrites original)
-        verbose: Whether to print detailed info for each image
-        
-    Returns:
-        Updated pandas DataFrame
-    """
+
     # Read existing CSV
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"CSV file not found: {csv_path}")
@@ -151,14 +121,7 @@ def update_csv_with_utr(csv_path, image_folder, output_csv=None, verbose=False):
     print(f"UTRs not found: {utrs_not_found}")
     if errors > 0:
         print(f"Errors/Missing images: {errors}")
-    
-    # Display updated DataFrame
-    print(f"\n{'='*60}")
-    print("UPDATED DATAFRAME:")
-    print(f"{'='*60}")
-    print(df.to_string(index=False))
-    print(f"{'='*60}")
-    
+        
     # Save updated CSV
     output_path = output_csv if output_csv else csv_path
     df.to_csv(output_path, index=False)
@@ -167,31 +130,15 @@ def update_csv_with_utr(csv_path, image_folder, output_csv=None, verbose=False):
     return df
 
 def main():
-    """
-    Main function to extract UTR numbers and update existing predictions.
-    """
-    # Configuration
-    CSV_PATH = "upi_predictions.csv"  # Input CSV from batch_inference.py
-    IMAGE_FOLDER = "test_images"  # Folder containing original images
-    OUTPUT_CSV = None  # None = overwrite original, or specify new filename
-    VERBOSE = False  # Set to True to see extracted text for each image
+
+    CSV_PATH = "upi_predictions.csv"  
+    IMAGE_FOLDER = "test_images"  
+    OUTPUT_CSV = None  
+    VERBOSE = False 
     
     print("UPI Screenshot UTR Extractor")
     print("=" * 60)
-    
-    # Check Tesseract installation
-    try:
-        version = pytesseract.get_tesseract_version()
-        print(f"✓ Tesseract OCR found (version {version})")
-    except:
-        print("✗ Tesseract OCR not found!")
-        print("\nPlease install Tesseract OCR:")
-        print("  Windows: Download from https://github.com/UB-Mannheim/tesseract/wiki")
-        print("  Linux: sudo apt-get install tesseract-ocr")
-        print("  Mac: brew install tesseract")
-        print("\nThen install Python package: pip install pytesseract")
-        return
-    
+        
     # Check if CSV exists
     if not os.path.exists(CSV_PATH):
         print(f"\nError: CSV file '{CSV_PATH}' not found!")
@@ -213,7 +160,6 @@ def main():
             verbose=VERBOSE
         )
         
-        # Show sample with UTRs found
         utrs_found_df = df[df['utr_number'] != 0]
         if len(utrs_found_df) > 0:
             print(f"\nSample of images with UTRs found:")

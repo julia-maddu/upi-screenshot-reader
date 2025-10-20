@@ -17,16 +17,9 @@ from inference_preprocessing import (
 )
 
 class UPIClassifier:
-    """
-    UPI Screenshot Classifier for batch inference using weights
-    """
+
     def __init__(self, weights_dir="upi_classifier_weights"):
-        """
-        Initialize the classifier by reconstructing model and loading weights.
-        
-        Args:
-            weights_dir: Directory containing weights and architecture files
-        """
+
         self.weights_dir = weights_dir
         self.model = None
         self.class_names = None
@@ -35,9 +28,7 @@ class UPIClassifier:
         self._load_model_from_weights()
     
     def _reconstruct_model(self, num_classes=6, input_shape=(224, 224, 3)):
-        """
-        Reconstruct the model architecture (must match training exactly).
-        """
+
         # Create the base model from EfficientNetB0
         base_model = EfficientNetB0(
             include_top=False,
@@ -97,15 +88,7 @@ class UPIClassifier:
         )
     
     def predict_single(self, image_path):
-        """
-        Predict class for a single image.
-        
-        Args:
-            image_path: Path to the image file
-            
-        Returns:
-            dict with 'filename', 'predicted_class', 'confidence', 'all_probabilities'
-        """
+
         # Preprocess image
         processed_img = preprocess_single_image(image_path)
         if processed_img is None:
@@ -121,8 +104,6 @@ class UPIClassifier:
         
         # Predict
         predictions = self.model.predict(batch_img, verbose=0)
-        
-        # Get predicted class
         predicted_idx = np.argmax(predictions[0])
         predicted_class = self.class_names[predicted_idx]
         confidence = float(predictions[0][predicted_idx])
@@ -135,18 +116,7 @@ class UPIClassifier:
         }
     
     def predict_batch(self, image_folder, batch_size=32, save_csv=True, output_path="predictions.csv"):
-        """
-        Predict classes for all images in a folder.
-        
-        Args:
-            image_folder: Path to folder containing images
-            batch_size: Number of images to process at once
-            save_csv: Whether to save results to CSV
-            output_path: Path where to save the CSV file
-            
-        Returns:
-            pandas DataFrame with columns ['filename', 'predicted_class']
-        """
+
         print(f"\n{'='*60}")
         print(f"Starting Batch Inference")
         print(f"{'='*60}")
@@ -219,14 +189,7 @@ class UPIClassifier:
         print(f"\nTotal images processed: {len(df)}")
         print(f"\nPrediction distribution:")
         print(df['predicted_class'].value_counts())
-        
-        # Display the DataFrame
-        print(f"\n{'='*60}")
-        print("RESULTS DATAFRAME:")
-        print(f"{'='*60}")
-        print(df.to_string(index=False))
-        print(f"{'='*60}")
-        
+                
         # Save to CSV
         if save_csv:
             df.to_csv(output_path, index=False)
@@ -235,14 +198,12 @@ class UPIClassifier:
         return df
 
 def main():
-    """
-    Main function for running batch inference.
-    """
+
     # Configuration
-    WEIGHTS_DIR = "upi_classifier_weights"  # Directory containing weights and metadata
-    IMAGE_FOLDER = "test_images"  # Folder containing images to classify
-    OUTPUT_CSV = "upi_predictions.csv"  # Output file name
-    BATCH_SIZE = 32  # Number of images to process at once
+    WEIGHTS_DIR = "upi_classifier_weights" 
+    IMAGE_FOLDER = "test_images"  
+    OUTPUT_CSV = "upi_predictions.csv"  
+    BATCH_SIZE = 32  
     
     print("UPI Screenshot Classifier - Batch Inference")
     print("=" * 60)

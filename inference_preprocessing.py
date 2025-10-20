@@ -7,17 +7,7 @@ TARGET_SIZE = (224, 224)
 PAD_COLOR = (0, 0, 0)  # Black padding
 
 def preprocess_single_image(image_path):
-    """
-    Preprocess a single image for inference.
-    This EXACTLY matches the training preprocessing pipeline.
-    
-    Args:
-        image_path: Path to the input image
-        
-    Returns:
-        numpy array of shape (224, 224, 3) with pixel values in [0, 255]
-        Returns None if image cannot be processed
-    """
+
     try:
         with Image.open(image_path) as img:
             # Convert to RGB (removes alpha channel if present)
@@ -28,32 +18,25 @@ def preprocess_single_image(image_path):
             aspect_ratio = width / height
             
             # Determine new dimensions that preserve aspect ratio
-            if aspect_ratio > 1:  # Wider than tall
+            if aspect_ratio > 1:  
                 new_width = min(width, TARGET_SIZE[0])
                 new_height = int(new_width / aspect_ratio)
-            else:  # Taller than wide or square
+            else:  
                 new_height = min(height, TARGET_SIZE[1])
                 new_width = int(new_height * aspect_ratio)
             
             # Resize the image while preserving aspect ratio
             img_resized = img.resize((new_width, new_height), Image.LANCZOS)
-            
-            # Create a new blank image with the target size
             padded_img = Image.new('RGB', TARGET_SIZE, PAD_COLOR)
             
             # Calculate position to paste (center the image)
             paste_x = (TARGET_SIZE[0] - new_width) // 2
             paste_y = (TARGET_SIZE[1] - new_height) // 2
-            
-            # Paste the resized image onto the padded canvas
             padded_img.paste(img_resized, (paste_x, paste_y))
             
             # Convert to numpy array
             img_array = np.array(padded_img, dtype=np.float32)
-            
-            # IMPORTANT: NO normalization - keep pixel values in [0, 255]
-            # This matches your training setup
-            
+                        
             return img_array
             
     except Exception as e:
@@ -61,16 +44,7 @@ def preprocess_single_image(image_path):
         return None
 
 def preprocess_batch_images(image_paths):
-    """
-    Preprocess multiple images for batch inference.
-    
-    Args:
-        image_paths: List of paths to input images
-        
-    Returns:
-        tuple: (numpy array of shape (N, 224, 224, 3), list of valid image paths)
-               Returns only successfully processed images
-    """
+
     processed_images = []
     valid_paths = []
     
@@ -89,16 +63,7 @@ def preprocess_batch_images(image_paths):
     return batch_array, valid_paths
 
 def get_image_files_from_folder(folder_path, extensions=('.jpg', '.jpeg', '.png')):
-    """
-    Get all image files from a folder.
-    
-    Args:
-        folder_path: Path to folder containing images
-        extensions: Tuple of valid image extensions
-        
-    Returns:
-        List of full paths to image files
-    """
+
     if not os.path.exists(folder_path):
         raise ValueError(f"Folder not found: {folder_path}")
     
@@ -113,7 +78,7 @@ def get_image_files_from_folder(folder_path, extensions=('.jpg', '.jpeg', '.png'
 # Example usage
 if __name__ == "__main__":
     # Test preprocessing on a single image
-    test_image = "test_images/screenshots/Alikana Greeshma.jpg"
+    test_image = "test_images/image_path"
     
     if os.path.exists(test_image):
         processed = preprocess_single_image(test_image)
